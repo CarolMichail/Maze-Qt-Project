@@ -6,7 +6,7 @@ Jerry::Jerry(int initialRow, int initialColumn, int d[10][10])
         for (int j = 0; j < 10; j++)
             data[i][j] = d[i][j];
     // Set Image
-    QPixmap image("Tweety.png");
+    QPixmap image("Jerry.jpeg");
     image = image.scaledToWidth(50);
     image = image.scaledToHeight(50);
     setPixmap(image);
@@ -14,6 +14,7 @@ Jerry::Jerry(int initialRow, int initialColumn, int d[10][10])
     setPos(50 + 50 * initialColumn, 50 + 50 * initialRow);
     row = initialRow;
     column = initialColumn;
+    withCheese=false;
 }
 void Jerry::setRow(int newRow)
 { row = newRow; }
@@ -62,13 +63,21 @@ void Jerry::move()
     }
     setPos(50 + 50 * column, 50 + 50 * row);
 
-    QList<QGraphicsItem*> items = collidingItems();
+
+   QList<QGraphicsItem*> items = collidingItems();
     for (int i = 0; i < items.size(); i++)
     {
-        if (typeid(*items[i]) == typeid(Food))
+        if (typeid(*items[i]) == typeid(Cheese))
         {
             scene()->removeItem(items[i]);
+            swapJerry(*this);
+            withCheese=true;
         }
     }
+}
+
+void Jerry:: swapJerry(Jerry& J)
+{
+     J.setPixmap(QPixmap("JerrywihCheese"));
 }
 

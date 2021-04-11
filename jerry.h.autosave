@@ -14,6 +14,7 @@ class Jerry: public QObject, public QGraphicsPixmapItem
         char direction;
         int row, column;
         int data[10][10];
+        bool withCheese;
     public:
         Jerry(int initialRow, int initialColumn, int d[10][10]);
         void setRow(int newRow);
@@ -23,6 +24,7 @@ class Jerry: public QObject, public QGraphicsPixmapItem
     public slots:
         void keyPressEvent(QKeyEvent* event);
         void move();
+        void swapJerry(Jerry& J);
 
 };
 
