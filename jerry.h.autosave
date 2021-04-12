@@ -5,6 +5,8 @@
 #include <QGraphicsPixmapItem>
 #include <QKeyEvent>
 #include <QList>
+#include <QTimer>
+#include <QPainter>
 
 #include <QGraphicsScene>
 
@@ -22,6 +24,9 @@ class Jerry: public QObject, public QGraphicsPixmapItem
         GameMode mode;
         int no_cheese;
         int no_lives;
+        QTimer *timer;
+        QTimer *t; 
+        //QPainter p;
     public:
         Jerry(int initialRow, int initialColumn, int d[10][10]);
         void setRow(int newRow);
@@ -30,6 +35,8 @@ class Jerry: public QObject, public QGraphicsPixmapItem
         int getColumn();
         void WinLose(int , int);
         void LifeBar();
+        void BacktoNormal();
+        void Blink();
     public slots:
         void keyPressEvent(QKeyEvent* event);
         void move();

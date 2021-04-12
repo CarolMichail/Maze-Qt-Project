@@ -1,5 +1,7 @@
 #include "jerry.h"
 
+//image.fill(Qt::transparent); //fills with transparent
+
 Jerry::Jerry(int initialRow, int initialColumn, int d[10][10])
 {
     for (int i = 0; i < 10; i++)
@@ -14,10 +16,14 @@ Jerry::Jerry(int initialRow, int initialColumn, int d[10][10])
     setPos(50 + 50 * initialColumn, 50 + 50 * initialRow);
     row = initialRow;
     column = initialColumn;
-    withCheese=false;
-    isInvincible=false;
+    withCheese = false;
+    isInvincible = false;
     no_lives = 3;
     no_cheese = 0;
+    timer = new QTimer(this);
+    t = new QTimer(this);
+    //PixMap(image);
+
 }
 void Jerry::setRow(int newRow)
 { row = newRow; }
@@ -89,7 +95,10 @@ void Jerry::move()
             mode = Invincible;
             isInvincible =true;
             //Opacity***
+
             //Timer --> 5 seconds to change back to normal --> New function is required to change to normal
+            timer->start(5000); //5000 milliseconds
+            connect(timer, SIGNAL(timeout()), this, SLOT(BacktoNormal()));
             //Update Life Bar
             LifeBar();
         }
@@ -100,6 +109,8 @@ void Jerry::move()
                 WinLose(--no_lives, no_cheese);
                 //Function to check on the lives lost --> if 0 then game over
                 //Blink***
+                connect(timer, SIGNAL(timeout()), this, SLOT(Blink()));
+                timer->start(100);
                 //Update life bar
                 LifeBar();
             }
@@ -107,12 +118,12 @@ void Jerry::move()
     }
 }
 
-void Jerry:: swapJerry(Jerry& J)
+void Jerry::swapJerry(Jerry& J)
 {
      J.setPixmap(QPixmap("JerrywihCheese"));
 }
 
-void Jerry:: WinLose(int lifeNum, int cheeseNum)
+void Jerry::WinLose(int lifeNum, int cheeseNum)
 {
     if (lifeNum == 0)
     {
@@ -123,11 +134,40 @@ void Jerry:: WinLose(int lifeNum, int cheeseNum)
         //Display "Winner Winner, Chicken Dinner"
     }
 }
-void Jerry:: LifeBar()
+void Jerry::LifeBar()
 {
     //Display number of lives and the number of cheese collected
     //Can be represented by pics
 
     //TO UPDATE: 1. Delete old bar 2. Rewrite the new bar
 }
+void Jerry::BacktoNormal()
+{
+    timer->stop();
+    //Opacity increases***
+    mode = Normal;
+    isInvincible = false;
+    LifeBar();
+}
+void Jerry::Blink()
+{
+    if (this->isVisible())
+        this->setVisible(false);
+    else
+        this->setVisible(true);
+}
+/*void Jerry::PixMap(QImage)
+{
+    QPainter paint(&pic);
+    Opacity(pic, paint, 0.5)
+}
+*/
 
+
+/*void Jerry::Opacity(QPixmap pic, QPainter paint, int value)
+{
+    paint.setOpacity(value);
+    paint.drawPixmap(0, 0, pic);
+    paint.end();
+}
+*/
