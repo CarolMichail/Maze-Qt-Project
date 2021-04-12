@@ -1,4 +1,7 @@
 #include "jerry.h"
+#include "cheese.h"
+#include "pellet.h"
+#include "tom.h"
 
 //image.fill(Qt::transparent); //fills with transparent
 
@@ -84,13 +87,13 @@ void Jerry::move()
    QList<QGraphicsItem*> items = collidingItems();
     for (int i = 0; i < items.size(); i++)
     {
-        if (typeid(*items[i]) == typeid(Cheese))
+        if (typeid(*items[i]) == typeid(cheese))
         {
             scene()->removeItem(items[i]);
             swapJerry(*this);
             withCheese=true;
         }
-        else if (typeid(*items[i]) == typeid(Pellet))
+        else if (typeid(*items[i]) == typeid(pellet))
         {
             mode = Invincible;
             isInvincible =true;
