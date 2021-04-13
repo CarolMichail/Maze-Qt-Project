@@ -5,18 +5,18 @@
 
 //image.fill(Qt::transparent); //fills with transparent
 
-Jerry::Jerry(int initialRow, int initialColumn, int d[10][10])
+Jerry::Jerry(int initialRow, int initialColumn, int d[20][20])
 {
-    for (int i = 0; i < 10; i++)
-        for (int j = 0; j < 10; j++)
+    for (int i = 0; i < 20; i++)
+        for (int j = 0; j < 20; j++)
             data[i][j] = d[i][j];
     // Set Image
-    QPixmap image("Jerry.jpeg");
-    image = image.scaledToWidth(50);
-    image = image.scaledToHeight(50);
+    QPixmap image("Jerry.png");
+    image = image.scaledToWidth(35);
+    image = image.scaledToHeight(35);
     setPixmap(image);
     // Set Position
-    setPos(50 + 50 * initialColumn, 50 + 50 * initialRow);
+    setPos(50 + 35 * initialColumn, 50 + 35 * initialRow);
     row = initialRow;
     column = initialColumn;
     withCheese = false;
@@ -57,23 +57,23 @@ void Jerry::keyPressEvent(QKeyEvent* event)
 }
 void Jerry::move()
 {
-    if (direction == 'u' && data[row - 1][column] != -1)
+    if (direction == 'u' && data[row - 1][column] != -10)
     {
         row--;
     }
-    else if (direction == 'd' && data[row + 1][column] != -1)
+    else if (direction == 'd' && data[row + 1][column] != -10)
     {
         row++;
     }
-    else if (direction == 'r' && data[row][column + 1] != -1)
+    else if (direction == 'r' && data[row][column + 1] != -10)
     {
         column++;
     }
-    else if (direction == 'l' && data[row][column - 1] != -1)
+    else if (direction == 'l' && data[row][column - 1] != -10)
     {
         column--;
     }
-    setPos(50 + 50 * column, 50 + 50 * row);
+    setPos(50 + 35 * column, 50 + 35 * row);
 
     if (data[row][column] == -20)
         if (withCheese)
@@ -89,12 +89,16 @@ void Jerry::move()
     {
         if (typeid(*items[i]) == typeid(cheese))
         {
+            if (!withCheese)
+            {
             scene()->removeItem(items[i]);
             swapJerry(*this);
             withCheese=true;
+            }
         }
         else if (typeid(*items[i]) == typeid(pellet))
         {
+            scene()->removeItem(items[i]);
             mode = Invincible;
             isInvincible =true;
             //Opacity***
@@ -112,8 +116,9 @@ void Jerry::move()
                 WinLose(--no_lives, no_cheese);
                 //Function to check on the lives lost --> if 0 then game over
                 //Blink***
-                connect(timer, SIGNAL(timeout()), this, SLOT(Blink()));
                 timer->start(100);
+                connect(timer, SIGNAL(timeout()), this, SLOT(Blink()));
+
                 //Update life bar
                 LifeBar();
             }
@@ -123,7 +128,11 @@ void Jerry::move()
 
 void Jerry::swapJerry(Jerry& J)
 {
-     J.setPixmap(QPixmap("JerrywihCheese"));
+     //J.setPixmap(QPixmap("JerrywihCheese.png"));
+     QPixmap img("JerrywithCheese.png");
+     img = img.scaledToWidth(35);
+     img = img.scaledToHeight(35);
+     J.setPixmap(img);
 }
 
 void Jerry::WinLose(int lifeNum, int cheeseNum)

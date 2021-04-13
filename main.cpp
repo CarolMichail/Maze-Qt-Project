@@ -6,6 +6,8 @@
 #include <QGraphicsPixmapItem>
 #include <cheese.h>
 #include <pellet.h>
+#include <jerry.h>
+#include <tom.h>
 
 int main(int argc, char *argv[])
 {
@@ -50,6 +52,16 @@ int main(int argc, char *argv[])
             // Add to the Scene
             scene.addItem(&boardImages[i][j]);
         }
+
+    Jerry j(9, 9, boardData);
+    scene.addItem(&j);
+
+    j.setFlag(QGraphicsPixmapItem::ItemIsFocusable);
+    j.setFocus();
+
+    QTimer timer;
+    timer.start(70);
+    timer.connect(&timer, SIGNAL(timeout()), &j, SLOT(move()));
     cheese c1(1, 1),c2(18,18),c3(1,18),c4(18,1);
     scene.addItem(&c1);
     scene.addItem(&c2);
@@ -59,8 +71,6 @@ int main(int argc, char *argv[])
     pellet p1(10,16),p2(15,10);
     scene.addItem(&p1);
     scene.addItem(&p2);
-
-
 
     view.setScene(&scene);
     view.show();

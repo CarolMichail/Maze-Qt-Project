@@ -3,7 +3,7 @@
 pellet::pellet(int initialRow, int initialColumn)
 {
     // Set Image
-    QPixmap image("heart.png");
+    QPixmap image("PelletOLD.png");
     image = image.scaledToWidth(35);
     image = image.scaledToHeight(35);
     setPixmap(image);

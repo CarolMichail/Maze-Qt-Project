@@ -18,7 +18,7 @@ class Jerry: public QObject, public QGraphicsPixmapItem
     private:
         char direction;
         int row, column;
-        int data[10][10];
+        int data[20][20];
         bool withCheese;
         bool isInvincible;
         GameMode mode;
@@ -28,7 +28,7 @@ class Jerry: public QObject, public QGraphicsPixmapItem
         QTimer *t;
         //QPainter p;
     public:
-        Jerry(int initialRow, int initialColumn, int d[10][10]);
+        Jerry(int initialRow, int initialColumn, int d[20][20]);
         void setRow(int newRow);
         int getRow();
         void setColumn(int newColumn);
