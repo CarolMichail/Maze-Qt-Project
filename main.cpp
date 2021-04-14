@@ -55,13 +55,28 @@ int main(int argc, char *argv[])
 
     Jerry j(9, 9, boardData);
     scene.addItem(&j);
+    scene.addItem(j.life);
+    Tom t(18,10,boardData);
+    scene.addItem(&t);
 
     j.setFlag(QGraphicsPixmapItem::ItemIsFocusable);
     j.setFocus();
 
+    t.setFlag(QGraphicsPixmapItem::ItemIsFocusable);
+
+
+
+
+
     QTimer timer;
     timer.start(70);
     timer.connect(&timer, SIGNAL(timeout()), &j, SLOT(move()));
+
+    timer.connect(&timer, SIGNAL(timeout()), &t, SLOT(advance()));
+
+
+
+
     cheese c1(1, 1),c2(18,18),c3(1,18),c4(18,1);
     scene.addItem(&c1);
     scene.addItem(&c2);

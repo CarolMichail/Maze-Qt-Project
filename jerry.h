@@ -7,8 +7,9 @@
 #include <QList>
 #include <QTimer>
 #include <QPainter>
-
+#include <QGraphicsSimpleTextItem>
 #include <QGraphicsScene>
+#include <QDebug>
 
 enum GameMode {Normal, Invincible};
 
@@ -16,6 +17,7 @@ class Jerry: public QObject, public QGraphicsPixmapItem
 { 
         Q_OBJECT
     private:
+    //QLabel lifeLabel;
         char direction;
         int row, column;
         int data[20][20];
@@ -27,7 +29,9 @@ class Jerry: public QObject, public QGraphicsPixmapItem
         QTimer *timer;
         QTimer *t;
         //QPainter p;
+
     public:
+                QGraphicsSimpleTextItem* life;
         Jerry(int initialRow, int initialColumn, int d[20][20]);
         void setRow(int newRow);
         int getRow();
@@ -41,7 +45,9 @@ class Jerry: public QObject, public QGraphicsPixmapItem
         void keyPressEvent(QKeyEvent* event);
         void move();
         void swapJerry(Jerry& J);
-
+        void ChangeLifeSlot(int newLife);
+signals:
+        void ChangeLife(int newLife);
 };
 
 #endif // JERRY_H

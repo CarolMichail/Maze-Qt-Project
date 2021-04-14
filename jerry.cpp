@@ -7,7 +7,14 @@
 
 Jerry::Jerry(int initialRow, int initialColumn, int d[20][20])
 {
-    for (int i = 0; i < 20; i++)
+    life = new QGraphicsSimpleTextItem;
+    life->setPos(10,10);
+
+    life->setText("ORIGInAL TEXT");
+
+    //scene()->addItem(life);
+
+    for (int i =0; i < 20; i++)
         for (int j = 0; j < 20; j++)
             data[i][j] = d[i][j];
     // Set Image
@@ -26,7 +33,7 @@ Jerry::Jerry(int initialRow, int initialColumn, int d[20][20])
     timer = new QTimer(this);
     t = new QTimer(this);
     //PixMap(image);
-
+    connect(this, SIGNAL(ChangeLife(int)),this, SLOT(ChangeLifeSlot(int)));
 }
 void Jerry::setRow(int newRow)
 { row = newRow; }
@@ -87,7 +94,7 @@ void Jerry::move()
    QList<QGraphicsItem*> items = collidingItems();
     for (int i = 0; i < items.size(); i++)
     {
-        if (typeid(*items[i]) == typeid(cheese))
+        if (typeid(items[i]) == typeid(cheese*))
         {
             if (!withCheese)
             {
@@ -96,7 +103,7 @@ void Jerry::move()
             withCheese=true;
             }
         }
-        else if (typeid(*items[i]) == typeid(pellet))
+        else if (typeid(items[i]) == typeid(pellet*))
         {
             scene()->removeItem(items[i]);
             mode = Invincible;
@@ -116,8 +123,10 @@ void Jerry::move()
                 WinLose(--no_lives, no_cheese);
                 //Function to check on the lives lost --> if 0 then game over
                 //Blink***
-                timer->start(100);
-                connect(timer, SIGNAL(timeout()), this, SLOT(Blink()));
+                emit ChangeLife(no_lives);
+                qDebug() << "We hit tom";
+                //timer->start(100);
+                //connect(timer, SIGNAL(timeout()), this, SLOT(Blink()));
 
                 //Update life bar
                 LifeBar();
@@ -133,6 +142,12 @@ void Jerry::swapJerry(Jerry& J)
      img = img.scaledToWidth(35);
      img = img.scaledToHeight(35);
      J.setPixmap(img);
+}
+
+void Jerry::ChangeLifeSlot(int newLife)
+{
+    life->setText(QString::number(newLife));
+    //life->setPlainText(QString::number(newLife));
 }
 
 void Jerry::WinLose(int lifeNum, int cheeseNum)
