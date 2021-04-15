@@ -13,13 +13,13 @@ SOURCES += \
     jerry.cpp \
     main.cpp \
     pellet.cpp \
-    tom.cpp
+    tom.cpp \
 
 HEADERS += \
     cheese.h \
     jerry.h \
     pellet.h \
-    tom.h
+    tom.h \
 
 FORMS +=
 

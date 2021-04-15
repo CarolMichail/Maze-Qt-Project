@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QGraphicsPixmapItem>
-
+#include "jerry.h"
 
 class Tom : public QObject, public QGraphicsPixmapItem
 {
@@ -13,11 +13,15 @@ private:
     int data[20][20];
      QTimer *timer;
 
+     //void movement();
+
 public slots:
-void advance();
-//void doCollision();
+     void RandMotion();
+     void advance();
+     //void doCollision();
 public:
     Tom(int initialRow, int initialColumn, int d[20][20]);
+    int home[13] = {100, 111, 112, 113, 124, 125, 126, 127, 128, 139, 140, 141, 151};
 
 
 };

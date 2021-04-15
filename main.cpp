@@ -56,6 +56,7 @@ int main(int argc, char *argv[])
     Jerry j(9, 9, boardData);
     scene.addItem(&j);
     scene.addItem(j.life);
+    scene.addItem(j.win);
     Tom t(18,10,boardData);
     scene.addItem(&t);
 
@@ -69,10 +70,12 @@ int main(int argc, char *argv[])
 
 
     QTimer timer;
-    timer.start(70);
-    timer.connect(&timer, SIGNAL(timeout()), &j, SLOT(move()));
+    QTimer tim;
+    tim.start(70);
+    timer.start(200);
+    tim.connect(&tim, SIGNAL(timeout()), &j, SLOT(move()));
 
-    timer.connect(&timer, SIGNAL(timeout()), &t, SLOT(advance()));
+    timer.connect(&timer, SIGNAL(timeout()), &t, SLOT(RandMotion()));
 
 
 
