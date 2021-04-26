@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
     QTimer timer;
     QTimer tim;
     tim.start(70);
-    timer.start(200);
+    timer.start(150);
     tim.connect(&tim, SIGNAL(timeout()), &j, SLOT(move()));
 
     timer.connect(&timer, SIGNAL(timeout()), &t, SLOT(RandMotion()));

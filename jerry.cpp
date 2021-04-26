@@ -27,12 +27,12 @@ Jerry::Jerry(int initialRow, int initialColumn, int d[20][20])
     no_lives = 3;
     no_cheese = 0;
     timer = new QTimer(this);
+    //connect(timer, SIGNAL(timeout()), this, SLOT(Blink()));
     t = new QTimer(this);
     isOver=false;
     mode = Normal;
     LifeBar();
     //PixMap(image);
-    //connect(this, SIGNAL(ChangeLife(int)),this, SLOT(ChangeLifeSlot(int)));
 }
 void Jerry::setRow(int newRow)
 { row = newRow; }
@@ -63,6 +63,7 @@ void Jerry::keyPressEvent(QKeyEvent* event)
     }
     }
 }
+
 void Jerry::move()
 {
     if (direction == 'u' && data[row - 1][column] != -10 && data[row - 1][column] != -20)
@@ -90,30 +91,49 @@ void Jerry::move()
         {
             WinLose(no_lives, ++no_cheese);
             withCheese= false;
-            //DONE: Function to check on the number of cheese --> if 4 then win
             JerryToNormal(*this);
             LifeBar();
-            //cheese c(18,18);
-            //QPixmap img("Cheese.png");
-            //img = img.scaledToWidth(35);
-            //img = img.scaledToHeight(35);
-            //c.setPixmap(img);
-            //img
-            //scene()->addItem(&c);
+            if (no_cheese == 1)
+            {
+                 c = new cheese(9, 9);
+                 scene()->addItem(c);
+            }
+            else if (no_cheese == 2)
+            {
+                c = new cheese(9, 11);
+                scene()->addItem(c);
+            }
+            else if (no_cheese == 3)
+            {
+                c = new cheese(11, 9);
+                scene()->addItem(c);
+            }
+            else if (no_cheese == 4)
+            {
+                c = new cheese(11, 11);
+                scene()->addItem(c);
+            }
         }
     }
 
+#include <QDebug>
 
    QList<QGraphicsItem*> items = collidingItems();
     for (int i = 0; i < items.size(); i++)
     {
+
+
         if (typeid(*items[i]) == typeid(cheese))
         {
             if (!withCheese)
             {
+
             scene()->removeItem(items[i]);
+            position = (*items[i]).pos();
+
             swapJerry(*this);
-            withCheese=true;
+            withCheese = true;
+
             }
         }
         else if (typeid(*items[i]) == typeid(pellet))
@@ -132,20 +152,53 @@ void Jerry::move()
         {
             if(!isInvincible)
             {
-                if (no_lives>=0)
+                if (withCheese)
+                {
+                    qDebug() << position.x() << "  "<<position.y();
+                    if (position.x() == 85 && position.y() == 85)
+                    {
+                            c1 = new cheese(1, 1);
+                            scene()->addItem(c1);
+                    }
+
+                    else if (position.x() == 85 && position.y() == 680)
+                    {
+                            c1 = new cheese(1, 18);
+                            scene()->addItem(c1);
+                    }
+
+                    else if (position.x() == 680 && position.y() == 85)
+                    {
+                            c1 = new cheese(18, 1);
+                            scene()->addItem(c1);
+                    }
+                    else if (position.x() == 680 && position.y() == 680)
+                    {
+                            qDebug() << position.x() << "  "<<position.y();
+                            c1 = new cheese(18, 18);
+                            scene()->addItem(c1);
+                    }
+
+                }
+
+
+                   JerryToNormal(*this);
+                   withCheese = false;
+
+         }
+                if (no_lives >= 0)
                   no_lives--;
                WinLose(no_lives, no_cheese);
-                //DONE: Function to check on the lives lost --> if 0 then game over
                 //Blink***
-                         //emit ChangeLife(no_lives);
-               /*timer->start(100);
-               connect(timer, SIGNAL(timeout()), this, SLOT(Blink()));
-               timer->stop();*/
+               //timer->start(30);
+               //timer->start(60);
+               //connect(timer, SIGNAL(timeout()), this, SLOT(Blink()));
+               //timer->stop();
                LifeBar();
-            }
         }
     }
 }
+
 
 void Jerry::swapJerry(Jerry& J)
 {
@@ -166,14 +219,6 @@ void Jerry::JerryToNormal(Jerry& J)
 
 }
 
-/*void Jerry::ChangeLifeSlot(int newLife)
-{
-    QString temp= "lives left: " + QString::number(no_lives) + "Cheese collected: " + no_cheese;
-    life->setText(temp);
-    //life->setPlainText(QString::number(newLife));
-
-
-}*/
 
 void Jerry::WinLose(int lifeNum, int cheeseNum)
 {
@@ -198,7 +243,6 @@ void Jerry::LifeBar()
         word = "Normal";
     else word = "Invincible";
     QString part1= "Lives left: " + QString::number(no_lives) + "   Cheese collected: " + QString::number(no_cheese) + "  Current Mode: "+ word;
-    //QString part2 = "Pellet Timer: ";
     life->setText(part1);
 
 }
@@ -212,15 +256,15 @@ void Jerry::BacktoNormal()
 }
 
 
-
-/*void Jerry::Blink()
+#include <QDebug>
+void Jerry::Blink()
 {
+    qDebug() << "here";
     if (this->isVisible())
         this->setVisible(false);
     else
         this->setVisible(true);
-
-}*/
+}
 
 
 

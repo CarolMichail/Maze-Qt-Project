@@ -39,18 +39,38 @@ void Tom::RandMotion()
     //{
         if (x==1 && data[row - 1][column] != -10)// && data[row - 1][column] != home[i])
         {
-            row--;
+            int i;
+            for (i=0; i < 13; i++)
+                if (data[row - 1][column] == home[i])
+                    break;
+            if (i == 13)
+                row--;
         }
         else if (x==2 && data[row + 1][column] != -10)// && data[row + 1][column] != home[i])
         {
+            int i;
+            for (i=0; i < 13; i++)
+                if (data[row + 1][column] == home[i])
+                    break;
+            if (i == 13)
             row++;
         }
         else if (x==3 && data[row][column + 1] != -10)// && data[row][column + 1] != home[i])
         {
+            int i;
+            for (i=0; i < 13; i++)
+                if (data[row][column + 1] == home[i])
+                    break;
+            if (i == 13)
             column++;
         }
         else if (x==4 && data[row][column - 1] != -10)// && data[row][column - 1] != home[i])
         {
+            int i;
+            for (i=0; i < 13; i++)
+                if (data[row][column - 1] == home[i])
+                    break;
+            if (i == 13)
             column--;
         }
     //}

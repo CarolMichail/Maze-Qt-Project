@@ -10,6 +10,7 @@
 #include <QGraphicsSimpleTextItem>
 #include <QGraphicsScene>
 #include <QDebug>
+#include "cheese.h"
 
 enum GameMode {Normal, Invincible};
 
@@ -18,6 +19,9 @@ class Jerry: public QObject, public QGraphicsPixmapItem
         Q_OBJECT
     private:
     //QLabel lifeLabel;
+        cheese *c;
+        cheese *c1;
+        QPointF position;
         char direction;
         int row, column;
         int data[20][20];
@@ -50,7 +54,7 @@ class Jerry: public QObject, public QGraphicsPixmapItem
 
         //void ChangeLifeSlot(int newLife);
         void BacktoNormal();
-        //void Blink();
+        void Blink();
         void LifeBar();
 signals:
         void ChangeLife(int newLife);
