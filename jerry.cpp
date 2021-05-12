@@ -127,13 +127,11 @@ void Jerry::move()
         {
             if (!withCheese)
             {
-
-            scene()->removeItem(items[i]);
-            position = (*items[i]).pos();
-
-            swapJerry(*this);
-            withCheese = true;
-
+                //*(items[i])->isHome = true;
+                scene()->removeItem(items[i]);
+                position = (*items[i]).pos();
+                swapJerry(*this);
+                withCheese = true;
             }
         }
         else if (typeid(*items[i]) == typeid(pellet))
@@ -185,7 +183,7 @@ void Jerry::move()
                    JerryToNormal(*this);
                    withCheese = false;
 
-         }
+
                 if (no_lives >= 0)
                   no_lives--;
                WinLose(no_lives, no_cheese);
@@ -195,6 +193,7 @@ void Jerry::move()
                //connect(timer, SIGNAL(timeout()), this, SLOT(Blink()));
                //timer->stop();
                LifeBar();
+            }
         }
     }
 }

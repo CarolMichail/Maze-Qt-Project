@@ -74,8 +74,8 @@ int main(int argc, char *argv[])
     tim.start(70);
     timer.start(150);
     tim.connect(&tim, SIGNAL(timeout()), &j, SLOT(move()));
-
-    timer.connect(&timer, SIGNAL(timeout()), &t, SLOT(RandMotion()));
+    //t.UpdateMotion();
+    timer.connect(&timer, SIGNAL(timeout()), &t, SLOT(UpdateMotion()));
 
 
 

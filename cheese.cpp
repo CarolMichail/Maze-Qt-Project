@@ -9,4 +9,5 @@ cheese::cheese(int initialRow, int initialColumn)
     setPixmap(image);
     // Set Position
     setPos(50 + 35 * initialColumn, 50 + 35 * initialRow);
+    isHome = false;
 }

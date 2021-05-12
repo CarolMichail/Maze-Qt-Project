@@ -7,6 +7,7 @@ class cheese : public QGraphicsPixmapItem
 {
 public:
     cheese(int initialRow, int initialColumn);
+    bool isHome;
 };
 
 #endif // CHEESE_H
