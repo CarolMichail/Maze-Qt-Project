@@ -8,7 +8,92 @@
 #include <pellet.h>
 #include <jerry.h>
 #include <tom.h>
+#include <QDebug>
+#include<QVector>
+const int COUNT = 230;
+const int INFINITE = 99999;
+QVector<QVector<int>> Dijkstra(int Graph[COUNT][COUNT], int startVertex)
+{
+    int temp[COUNT][COUNT];
+    for (int i = 0; i < COUNT; i++)
+    {
+        for (int j = 0; j < COUNT; j++)
+        {
+            if (Graph[i][j] == 0)
+                temp[i][j] = INFINITE;
+            else
+                temp[i][j] = Graph[i][j];
+        }
+    }
+    bool visited[COUNT];
+    int previous[COUNT];
+    float cost[COUNT];
+    // 1st Row:
+    for (int i = 0; i < COUNT; i++)
+    {
+        if (i == startVertex)
+        {
+            previous[i] = -1;
+            cost[i] = 0;
+            visited[i] = true;
+        }
+        else
+        {
+            previous[i] = startVertex;
+            cost[i] = temp[startVertex][i];
+            visited[i] = false;
+        }
+    }
+    // All Rows:
+    int count = 1;
+    while (count < COUNT)
+    {
+        // Determine which vertex to visit.
+        int minimum = INFINITE, visitedVertex;
+        for (int i = 0; i < COUNT; i++)
+        {
+            if (visited[i] == false && cost[i] < minimum)
+            {
+                minimum = cost[i];
+                visitedVertex = i;
+            }
+        }
+        // Visit the vertex.
+        visited[visitedVertex] = true;
 
+        // Check whether there are shorter paths.
+        for (int i = 0; i < COUNT; i++)
+        {
+            if (visited[i] == false)
+            {
+                if ((cost[visitedVertex] + temp[visitedVertex][i]) < cost[i])
+                {
+                    previous[i] = visitedVertex;
+                    cost[i] = (cost[visitedVertex] + temp[visitedVertex][i]);
+                }
+            }
+        }
+        count++;
+    }
+    // Extract the paths.
+    QVector<QVector<int>> paths;
+    paths.resize(COUNT);
+    int j;
+    for (int i = 0; i < COUNT; i++)
+    {
+        paths[i].push_back(i);
+        if (i != startVertex)
+        {
+            j = i;
+            do
+            {
+                j = previous[j];
+                paths[i].insert(paths[i].begin(), j);
+            } while (j != startVertex);
+        }
+    }
+    return paths;
+}
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -18,16 +103,70 @@ int main(int argc, char *argv[])
     view.setFixedSize(1000,1000);
     view.setBackgroundBrush(QBrush(Qt::gray));
     int boardData[20][20];
+    int adjMatrix[230][230]={{0}};
+     int vertex;
+     QVector<QVector<int>> adjM;
     QFile file("board.txt");
     file.open(QIODevice::ReadOnly);
     QTextStream stream(&file);
     QString temp;
     for (int i = 0; i < 20; i++)
-        for (int j = 0; j < 20; j++)
+      {  for (int j = 0; j < 20; j++)
         {
             stream >> temp;
             boardData[i][j]=temp.toInt();
         }
+    }
+
+          for (int i = 1; i < 19; i++)
+              {   for (int j = 1; j < 19; j++)
+                     {
+                    vertex = boardData[i][j];
+
+                   if (boardData[i][j] >=0)
+       {
+
+                if (boardData[i][j + 1] >= 0 )
+                {
+                    adjMatrix[vertex][boardData[i][j+1]] = 1;
+                }
+        if(boardData[i-1][j]>=0)
+
+                  {
+                    adjMatrix[vertex][boardData[i-1][j]] = 1;
+
+                }
+     if(boardData[i][j-1]>=0)
+                {
+                    adjMatrix[vertex][boardData[i][j-1]] = 1;
+                }
+      if(boardData[i+1][j]>=0)
+                {
+
+                 adjMatrix[vertex][boardData[i+1][j]] = 1;
+                }
+
+                else
+                {
+                    adjMatrix[vertex][boardData[i][j]] = 0;
+                }
+                       }
+            }
+
+}
+
+
+          /*for (int s=0;s<230;s++)
+               {
+                  for( int k=0;k<230;k++)
+               qDebug()<<"adj=: "<<adjMatrix[s][k]<<" ";
+
+                      }
+
+*/
+QVector<QVector<int>> result;
+
+result=Dijkstra(adjMatrix[COUNT][COUNT],  startVertex);
 
 
     QPixmap q1("border.png");
@@ -94,3 +233,4 @@ int main(int argc, char *argv[])
     view.show();
     return a.exec();
 }
+//}

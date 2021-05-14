@@ -152,7 +152,7 @@ void Jerry::move()
             {
                 if (withCheese)
                 {
-                    qDebug() << position.x() << "  "<<position.y();
+                 //   qDebug() << position.x() << "  "<<position.y();
                     if (position.x() == 85 && position.y() == 85)
                     {
                             c1 = new cheese(1, 1);
@@ -172,7 +172,7 @@ void Jerry::move()
                     }
                     else if (position.x() == 680 && position.y() == 680)
                     {
-                            qDebug() << position.x() << "  "<<position.y();
+                          //  qDebug() << position.x() << "  "<<position.y();
                             c1 = new cheese(18, 18);
                             scene()->addItem(c1);
                     }
@@ -258,7 +258,7 @@ void Jerry::BacktoNormal()
 #include <QDebug>
 void Jerry::Blink()
 {
-    qDebug() << "here";
+   // qDebug() << "here";
     if (this->isVisible())
         this->setVisible(false);
     else

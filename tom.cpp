@@ -17,7 +17,7 @@ Tom::Tom(int initialRow, int initialColumn, int d[20][20])
     setPos(50 + 35 * column, 50 + 35 * row);
     //QVector<int> path = { 220, 221, 222, 223, 206, 191, 184, 185, 186, 187, 171, 168, 154, 144, 132, 117, 104, 91, 75, 67, 66, 65, 64, 63};
     step = 1;
-    qDebug() << path.at(step);
+  //  qDebug() << path.at(step);
 
 }
 /*void Tom:: movement()
@@ -36,7 +36,8 @@ setPos(mapToParent(0, -speed));
 
 void Tom::UpdateMotion(/*QVector<int> path*/)
 {
-        qDebug() << "Size: " << path.size() << "  " << step;
+
+      //  qDebug() << "Size: " << path.size() << "  " << step;
         // << endl << path.at(step);
 
         //for (int i = 1; i < path.size(); i++)
@@ -60,7 +61,7 @@ void Tom::UpdateMotion(/*QVector<int> path*/)
                     row--;
             }
             setPos(50 + 35 * column, 50 + 35 * row);
-            qDebug() << row << "  " << column;
+          //  qDebug() << row << "  " << column;
             step++;
         }
 
