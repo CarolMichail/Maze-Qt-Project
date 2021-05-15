@@ -9,16 +9,14 @@
 #include <QPainter>
 #include <QGraphicsSimpleTextItem>
 #include <QGraphicsScene>
-#include <QDebug>
 #include "cheese.h"
-
+#include "tom.h"
 enum GameMode {Normal, Invincible};
 
 class Jerry: public QObject, public QGraphicsPixmapItem
 { 
         Q_OBJECT
     private:
-    //QLabel lifeLabel;
         cheese *c;
         cheese *c1;
         QPointF position;
@@ -33,12 +31,23 @@ class Jerry: public QObject, public QGraphicsPixmapItem
         int no_lives;
         QTimer *timer;
         QTimer *t;
-        //QPainter p;
+        Tom *tom;
+        bool inHome()
+
+        {
+            for (int i=0;i<13;i++)
+                 if (data[row][column]==home[i])
+                 {
+                     return true;
+                 }
+            return false;
+        }
+        int jerryVertex=0;
 
     public:
         QGraphicsSimpleTextItem* life;
         QGraphicsSimpleTextItem* win;
-        Jerry(int initialRow, int initialColumn, int d[20][20]);
+        Jerry(int initialRow, int initialColumn, int d[20][20],Tom &t);
         void setRow(int newRow);
         int getRow();
         void setColumn(int newColumn);
@@ -52,7 +61,6 @@ class Jerry: public QObject, public QGraphicsPixmapItem
         void keyPressEvent(QKeyEvent* event);
         void move();
 
-        //void ChangeLifeSlot(int newLife);
         void BacktoNormal();
         void Blink();
         void LifeBar();

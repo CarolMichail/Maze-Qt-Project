@@ -53,13 +53,13 @@ int main(int argc, char *argv[])
             scene.addItem(&boardImages[i][j]);
         }
 
-    Jerry j(9, 9, boardData);
+
+    Tom t(18,10,boardData);
+    scene.addItem(&t);
+    Jerry j(9, 9, boardData,t);
     scene.addItem(&j);
     scene.addItem(j.life);
     scene.addItem(j.win);
-    Tom t(18,10,boardData);
-    scene.addItem(&t);
-
     j.setFlag(QGraphicsPixmapItem::ItemIsFocusable);
     j.setFocus();
 
@@ -71,10 +71,9 @@ int main(int argc, char *argv[])
 
     QTimer timer;
     QTimer tim;
-    tim.start(70);
-    timer.start(150);
+    tim.start(300);
+    timer.start(400);
     tim.connect(&tim, SIGNAL(timeout()), &j, SLOT(move()));
-    //t.UpdateMotion();
     timer.connect(&timer, SIGNAL(timeout()), &t, SLOT(UpdateMotion()));
 
 

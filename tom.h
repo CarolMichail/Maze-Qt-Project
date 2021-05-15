@@ -4,8 +4,9 @@
 #include <QVector>
 #include <QObject>
 #include <QGraphicsPixmapItem>
-#include "jerry.h"
 
+const int COUNT =231;
+const int INFINITE=9999;
 class Tom : public QObject, public QGraphicsPixmapItem
 {
   Q_OBJECT
@@ -13,23 +14,35 @@ private:
     int row, column;
     int data[20][20];
      QTimer *timer;
+     bool inHome(int vertex)
 
+     {
+         for (int i=0;i<13;i++)
+              if (vertex==home[i])
+              {
+                  return true;
+              }
+         return false;
+     }
 
+        QVector<QVector<int> > Dijkstra(int Graph[COUNT][COUNT], int startVertex);
+      bool moving=true;
+      int jerryVertex;
 
-     //void movement();
 
 public slots:
      void RandMotion();
      void advance();
      void UpdateMotion();
-     //void doCollision();
+
 public:
     Tom(int initialRow, int initialColumn, int d[20][20]);
     int home[13] = {100, 111, 112, 113, 124, 125, 126, 127, 128, 139, 140, 141, 151};
-    QVector<int> path = { 220, 221, 222, 223, 206, 191, 184, 185, 186, 187, 171, 168, 154, 144, 132, 117, 104, 91, 75, 67, 66, 65, 64, 63};
     int step;
-
-
+    void SetJerryVertex(int v);
+    int adjMatrix[COUNT][COUNT];
+    void stoppMoving();
+    void ReturnToOriginalPos();
 };
 
 #endif

@@ -1,14 +1,18 @@
 #include "jerry.h"
 #include "cheese.h"
 #include "pellet.h"
-#include "tom.h"
+
 
 //image.fill(Qt::transparent); //fills with transparent
 
-Jerry::Jerry(int initialRow, int initialColumn, int d[20][20])
+Jerry::Jerry(int initialRow, int initialColumn, int d[20][20], Tom & t)
 {
+    this->tom = &t;
+    const QFont fon("Comic Sans MS",15);
     win = new QGraphicsSimpleTextItem;
+    win->setFont(fon);
     life = new QGraphicsSimpleTextItem;
+    life->setFont(fon);
     life->setPos(10,10);
     for (int i =0; i < 20; i++)
         for (int j = 0; j < 20; j++)
@@ -28,7 +32,7 @@ Jerry::Jerry(int initialRow, int initialColumn, int d[20][20])
     no_cheese = 0;
     timer = new QTimer(this);
     //connect(timer, SIGNAL(timeout()), this, SLOT(Blink()));
-    t = new QTimer(this);
+    this->t = new QTimer(this);
     isOver=false;
     mode = Normal;
     LifeBar();
@@ -64,6 +68,7 @@ void Jerry::keyPressEvent(QKeyEvent* event)
     }
 }
 
+
 void Jerry::move()
 {
     if (direction == 'u' && data[row - 1][column] != -10 && data[row - 1][column] != -20)
@@ -83,7 +88,7 @@ void Jerry::move()
         column--;
     }
     setPos(50 + 35 * column, 50 + 35 * row);
-
+    tom->SetJerryVertex(data[row][column]);
     for (int i = 0; i < 13;i++)
     {
     if (data[row][column] == home[i]) //Not -20
@@ -114,20 +119,20 @@ void Jerry::move()
                 scene()->addItem(c);
             }
         }
+
     }
 
-#include <QDebug>
 
    QList<QGraphicsItem*> items = collidingItems();
     for (int i = 0; i < items.size(); i++)
     {
 
 
-        if (typeid(*items[i]) == typeid(cheese))
+        if (typeid(*items[i]) == typeid(cheese) && !inHome())
         {
             if (!withCheese)
             {
-                //*(items[i])->isHome = true;
+
                 scene()->removeItem(items[i]);
                 position = (*items[i]).pos();
                 swapJerry(*this);
@@ -148,11 +153,15 @@ void Jerry::move()
         }
         else if (typeid(*items[i]) == typeid(Tom))
         {
+            tom->ReturnToOriginalPos();
             if(!isInvincible)
             {
+                row = 9;
+                column = 9;
+                setPos(50+ 35 * column, 50 + 35 * row);
                 if (withCheese)
                 {
-                    qDebug() << position.x() << "  "<<position.y();
+
                     if (position.x() == 85 && position.y() == 85)
                     {
                             c1 = new cheese(1, 1);
@@ -161,32 +170,30 @@ void Jerry::move()
 
                     else if (position.x() == 85 && position.y() == 680)
                     {
-                            c1 = new cheese(1, 18);
+                            c1 = new cheese(18, 1);
                             scene()->addItem(c1);
                     }
 
                     else if (position.x() == 680 && position.y() == 85)
                     {
-                            c1 = new cheese(18, 1);
+                            c1 = new cheese(1, 18);
                             scene()->addItem(c1);
                     }
                     else if (position.x() == 680 && position.y() == 680)
                     {
-                            qDebug() << position.x() << "  "<<position.y();
+
                             c1 = new cheese(18, 18);
                             scene()->addItem(c1);
                     }
 
                 }
 
-
                    JerryToNormal(*this);
                    withCheese = false;
 
 
-                if (no_lives >= 0)
+                if (no_lives > 0)
                   no_lives--;
-               WinLose(no_lives, no_cheese);
                 //Blink***
                //timer->start(30);
                //timer->start(60);
@@ -196,6 +203,7 @@ void Jerry::move()
             }
         }
     }
+    WinLose(no_lives, no_cheese);
 }
 
 
@@ -206,6 +214,8 @@ void Jerry::swapJerry(Jerry& J)
      img = img.scaledToHeight(35);
      J.setPixmap(img);
 }
+
+
 
 
 void Jerry::JerryToNormal(Jerry& J)
@@ -221,16 +231,20 @@ void Jerry::JerryToNormal(Jerry& J)
 
 void Jerry::WinLose(int lifeNum, int cheeseNum)
 {
-    win->setPos(500,10);
+    win->setPos(500,-20);
     if (lifeNum == 0)
     {
         isOver = true;
         win->setText("Game Over");
+        tom->stoppMoving();
+        direction = ' ';
     }
     else if (cheeseNum == 4)
     {
+        direction = ' ';
+        tom->stoppMoving();
         isOver = true;
-        win->setText("Winner, Winner Chicken Dinner");
+        win->setText("Winner, Winner Cheese Dinner");
     }
 }
 void Jerry::LifeBar()
@@ -238,6 +252,7 @@ void Jerry::LifeBar()
     //Display number of lives and the number of cheese collected
     //Can be represented by pics
     QString word;
+
     if (mode == Normal)
         word = "Normal";
     else word = "Invincible";
@@ -255,10 +270,10 @@ void Jerry::BacktoNormal()
 }
 
 
-#include <QDebug>
+
 void Jerry::Blink()
 {
-    qDebug() << "here";
+
     if (this->isVisible())
         this->setVisible(false);
     else
