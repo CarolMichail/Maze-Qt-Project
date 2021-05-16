@@ -4,9 +4,7 @@
 #include <QObject>
 #include <QGraphicsPixmapItem>
 #include <QKeyEvent>
-#include <QList>
 #include <QTimer>
-#include <QPainter>
 #include <QGraphicsSimpleTextItem>
 #include <QGraphicsScene>
 #include "cheese.h"
@@ -26,7 +24,6 @@ class Jerry: public QObject, public QGraphicsPixmapItem
         char direction;
         int row, column;
         int no_cheese;
-        int jerryVertex = 0;
         int no_lives;
         int data[20][20];
         int home[9] = { 111, 112, 113, 125, 126, 127, 140, 141, 142};

@@ -18,15 +18,23 @@ Tom::Tom(int initialRow, int initialColumn, int d[20][20])
     // Set Position
     setPos(50 + 35 * column, 50 + 35 * row);
 
+//creating the adjacency Matrix
+
+    //intialize all of the matrix with zeros
     for (int i = 0; i < COUNT; i++)
         {
         for (int j = 0; j < COUNT; j++)
                 adjMatrix[i][j] = 0;
         }
+
+    // the loop on the data in the board, for each number that is not negative, this will be the vertex.
     for (int i = 0; i <= 19; i++)
         {   for (int j = 0; j <= 19; j++)
                {
               int vertex = data[i][j];
+    //make sure that the vertex is not inside the house because tom can't go there
+    // then fill the adjacency matrix with 1's for the starting vertex( the one we are at)
+    //and it's adjacent vertices(top, bottom,right,left)
 
              if (data[i][j] >=0 && !inHome(vertex))
  {
@@ -62,6 +70,7 @@ Tom::Tom(int initialRow, int initialColumn, int d[20][20])
 
 }
 
+//returns tom to his original position and the bottom middle
 void Tom::ReturnToOriginalPos()
 {
     row = 18;
@@ -69,6 +78,7 @@ void Tom::ReturnToOriginalPos()
     setPos(50 + 35 * column, 50 + 35 * row);
 }
 
+//Dijkstra gets all the paths from the starting Node to all other nodes
 QVector<QVector<int> > Tom::Dijkstra(int Graph[COUNT][COUNT], int startVertex)
 {
        int temp[COUNT][COUNT];
@@ -154,25 +164,16 @@ QVector<QVector<int> > Tom::Dijkstra(int Graph[COUNT][COUNT], int startVertex)
 
 }
 
-
-void Tom::advance()//advancing the position, responsible for moving
-{
-    qreal speed = 5;
-    RandMotion();
-
-
-setPos(mapToParent(0, -speed));
-}
-
-
+//this function makes tom move after jerry using the dijksra algorithm and the adjacency matrix
+// it is responsible for the movement of Tom
 void Tom::UpdateMotion()
 {
+    //If Tom needs to move
     if(moving){
     auto path = Dijkstra(adjMatrix, data[row][column]);
-    QString str = "";
-    for(auto p : path[jerryVertex])
-        str += QString::number(p) + " ";
 
+    //Checks the successor nodes and finds their values
+    //If one of them matches the next in path then it moves accordingly.
      if(path[jerryVertex].size() > 1)
      {
          int nextNode = path[jerryVertex][1];
@@ -195,65 +196,58 @@ void Tom::UpdateMotion()
 
 }
 
+//used in the jerry class to know where jerry is at now
 void Tom::SetJerryVertex(int v)
 {
-
     jerryVertex = v;
 }
 
+// makes stop moving when the game is over
 void Tom::stoppMoving()
 {
     moving=false;
 }
 
-
+//Milestone1 Random Movement of Tom
 void Tom::RandMotion()
 {
     srand(time(NULL));
     int x = qrand()% 4 + 1;
-    //for ( int i=0; i < 13; i++)
-    //{
-        if (x==1 && data[row - 1][column] != -10)// && data[row - 1][column] != home[i])
+    if (x==1 && data[row - 1][column] != -10)
         {
             int i;
-            for (i=0; i < 13; i++)
+            for (i=0; i < 9; i++)
                 if (data[row - 1][column] == home[i])
                     break;
-            if (i == 13)
+            if (i == 9)
                 row--;
         }
-        else if (x==2 && data[row + 1][column] != -10)// && data[row + 1][column] != home[i])
+        else if (x==2 && data[row + 1][column] != -10)
         {
             int i;
-            for (i=0; i < 13; i++)
+            for (i=0; i < 9; i++)
                 if (data[row + 1][column] == home[i])
                     break;
-            if (i == 13)
+            if (i == 9)
             row++;
         }
-        else if (x==3 && data[row][column + 1] != -10)// && data[row][column + 1] != home[i])
+        else if (x==3 && data[row][column + 1] != -10)
         {
             int i;
-            for (i=0; i < 13; i++)
+            for (i=0; i < 9; i++)
                 if (data[row][column + 1] == home[i])
                     break;
-            if (i == 13)
+            if (i == 9)
             column++;
         }
         else if (x==4 && data[row][column - 1] != -10)// && data[row][column - 1] != home[i])
         {
             int i;
-            for (i=0; i < 13; i++)
+            for (i=0; i < 9; i++)
                 if (data[row][column - 1] == home[i])
                     break;
-            if (i == 13)
+            if (i == 9)
             column--;
         }
-    //}
     setPos(50 + 35 * column, 50 + 35 * row);
 }
-
-
-
-
-
