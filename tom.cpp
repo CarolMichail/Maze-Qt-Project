@@ -17,7 +17,6 @@ Tom::Tom(int initialRow, int initialColumn, int d[20][20])
     setPixmap(image);
     // Set Position
     setPos(50 + 35 * column, 50 + 35 * row);
-    step = 1;
 
     for (int i = 0; i < COUNT; i++)
         {

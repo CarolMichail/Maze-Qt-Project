@@ -14,10 +14,10 @@ private:
     int row, column;
     int data[20][20];
      QTimer *timer;
-     bool inHome(int vertex)
+     inline bool inHome(int vertex)
 
      {
-         for (int i=0;i<13;i++)
+         for (int i=0;i<9;i++)
               if (vertex==home[i])
               {
                   return true;
@@ -25,7 +25,7 @@ private:
          return false;
      }
 
-        QVector<QVector<int> > Dijkstra(int Graph[COUNT][COUNT], int startVertex);
+      QVector<QVector<int> > Dijkstra(int Graph[COUNT][COUNT], int startVertex);
       bool moving=true;
       int jerryVertex;
 
@@ -37,8 +37,7 @@ public slots:
 
 public:
     Tom(int initialRow, int initialColumn, int d[20][20]);
-    int home[13] = {100, 111, 112, 113, 124, 125, 126, 127, 128, 139, 140, 141, 151};
-    int step;
+    int home[9] = { 111, 112, 113, 125, 126, 127, 140, 141, 142};
     void SetJerryVertex(int v);
     int adjMatrix[COUNT][COUNT];
     void stoppMoving();

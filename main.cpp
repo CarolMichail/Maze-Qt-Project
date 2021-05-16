@@ -54,42 +54,50 @@ int main(int argc, char *argv[])
         }
 
 
+    //Declaration of Tom and Jerry and adding them to the scene
     Tom t(18,10,boardData);
-    scene.addItem(&t);
     Jerry j(9, 9, boardData,t);
+    scene.addItem(&t);
     scene.addItem(&j);
+
+
+    //Adding the text bars to the scene
     scene.addItem(j.life);
     scene.addItem(j.win);
+
+
+    //Setting the flags for Tom and Jerry and stting the focus on Jerry
+    t.setFlag(QGraphicsPixmapItem::ItemIsFocusable);
     j.setFlag(QGraphicsPixmapItem::ItemIsFocusable);
     j.setFocus();
 
-    t.setFlag(QGraphicsPixmapItem::ItemIsFocusable);
+
+    //Timers to call the moving functions of both Tom and Jerry
+    QTimer Ttimer;
+    QTimer Jtimer;
+    Jtimer.start(100);
+    Ttimer.start(300);
+    Jtimer.connect(&Jtimer, SIGNAL(timeout()), &j, SLOT(move()));
+    Ttimer.connect(&Ttimer, SIGNAL(timeout()), &t, SLOT(UpdateMotion()));
 
 
-
-
-
-    QTimer timer;
-    QTimer tim;
-    tim.start(300);
-    timer.start(400);
-    tim.connect(&tim, SIGNAL(timeout()), &j, SLOT(move()));
-    timer.connect(&timer, SIGNAL(timeout()), &t, SLOT(UpdateMotion()));
-
-
-
-
+    //Declaration of the 4 pieces of cheese and adding them to the scene
     cheese c1(1, 1),c2(18,18),c3(1,18),c4(18,1);
     scene.addItem(&c1);
     scene.addItem(&c2);
     scene.addItem(&c3);
     scene.addItem(&c4);
 
+
+    //Declaration of the 2 pellets and adding them to the scene
     pellet p1(10,16),p2(15,10);
     scene.addItem(&p1);
     scene.addItem(&p2);
 
+
+    //Setting the scene on the graphics view
     view.setScene(&scene);
     view.show();
+
     return a.exec();
 }
