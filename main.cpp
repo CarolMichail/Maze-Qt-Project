@@ -22,14 +22,15 @@ int main(int argc, char *argv[])
     file.open(QIODevice::ReadOnly);
     QTextStream stream(&file);
     QString temp;
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < 20; i++) // a loop that reads the numbers as strings from the board txt file
         for (int j = 0; j < 20; j++)
         {
-            stream >> temp;
-            boardData[i][j]=temp.toInt();
+            stream >> temp; // numbers are read as strings to avoid the interpreation of numbers as octals instead of decimals
+            boardData[i][j]=temp.toInt(); // each string is converted to an integer 
         }
 
-
+  // declaration of the images as QPixmap to be added to the scene
+  // Adjusting the sizes of the images
     QPixmap q1("border.png");
     q1 = q1.scaledToWidth(35);
     q1 = q1.scaledToHeight(35);
@@ -37,20 +38,21 @@ int main(int argc, char *argv[])
     q2 = q2.scaledToWidth(35);
     q2 = q2.scaledToHeight(35);
     QGraphicsPixmapItem boardImages[20][20];
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < 20; i++) // a loop that sets the images on the scene according to the corresponding number on the board txt file
         for (int j = 0; j < 20; j++)
         {
-            //set image
-            if ((boardData[i][j] == -10)||(boardData[i][j]== -20))
+            //setting image
+            if ((boardData[i][j] == -10)||(boardData[i][j]== -20)) // -20 symbolizes Jerry's home while -10 symbolizes the borders. Both have the same image
                 boardImages[i][j].setPixmap(q1);
             else
                 if(boardData[i][j] != -10 && boardData[i][j]!= -20)
                 boardImages[i][j].setPixmap(q2);
 
-            // Set Position
-            boardImages[i][j].setPos(50 + (35 * j), 50 + (35 * i));
-            // Add to the Scene
-            scene.addItem(&boardImages[i][j]);
+            // Setting Position
+            boardImages[i][j].setPos(50 + (35 * j), 50 + (35 * i)); // an indentaion of 50 pixels up, down, right, and left. The upward indentaion is for
+            //displaying the final score, number of lives left, and number of cheeses gained.
+            // Adding images to the Scene
+            scene.addItem(&boardImages[i][j]); 
         }
 
 
